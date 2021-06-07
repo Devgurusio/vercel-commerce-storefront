@@ -22,8 +22,10 @@
       "@components/*": ["components/*"],
       "@commerce": ["framework/commerce"],
       "@commerce/*": ["framework/commerce/*"],
-      "@framework": ["framework/shopify"],
-      "@framework/*": ["framework/shopify/*"]
+      "@framework": ["framework/commercetools"],
+      "@framework/*": ["framework/commercetools/*"],
+      "@commercetools": ["framework/commercetools"],
+      "@commercetools/*": ["framework/commercetools/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.d.ts", "**/*.ts", "**/*.tsx", "**/*.js"],

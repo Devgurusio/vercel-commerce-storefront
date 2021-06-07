@@ -1,5 +1,5 @@
-import type { APIProvider, CommerceAPIConfig } from '@commerce/api'
-import { CommerceAPI, getCommerceApi as commerceApi } from '@commerce/api'
+import type { APIProvider, CommerceAPIConfig } from '../../commerce/api'
+import { CommerceAPI, getCommerceApi as commerceApi } from '../../commerce/api'
 import fetchGraphqlApi from './utils/fetch-graphql-api'
 
 import login from './operations/login'
@@ -11,7 +11,9 @@ import getAllProductPaths from './operations/get-all-product-paths'
 import getAllProducts from './operations/get-all-products'
 import getProduct from './operations/get-product'
 
-export interface VendureConfig extends CommerceAPIConfig {}
+export interface VendureConfig extends CommerceAPIConfig {
+  [x: string]: any
+}
 
 const API_URL = process.env.NEXT_PUBLIC_VENDURE_SHOP_API_URL
 

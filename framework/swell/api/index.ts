@@ -1,4 +1,4 @@
-import type { CommerceAPIConfig } from '@commerce/api'
+import type { CommerceAPIConfig } from '../../commerce/api'
 
 import {
   SWELL_CHECKOUT_ID_COOKIE,
