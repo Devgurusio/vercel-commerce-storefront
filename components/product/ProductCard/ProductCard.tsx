@@ -31,7 +31,7 @@ const ProductCard: FC<Props> = ({
               {product.name}
             </span>
           </div>
-          {product?.images && (
+          {/* {product?.images && (
             <Image
               quality="85"
               src={product.images[0]?.url || placeholderImg}
@@ -41,7 +41,7 @@ const ProductCard: FC<Props> = ({
               layout="fixed"
               {...imgProps}
             />
-          )}
+          )} */}
         </div>
       ) : (
         <>
@@ -66,18 +66,18 @@ const ProductCard: FC<Props> = ({
             )}
           </div>
           <div className={s.imageContainer}>
-            {product?.images && (
-              <Image
-                alt={product.name || 'Product Image'}
-                className={s.productImage}
-                src={product.images[0]?.url || placeholderImg}
-                height={540}
-                width={540}
-                quality="85"
-                layout="responsive"
-                {...imgProps}
-              />
-            )}
+            {/* {product?.images && (
+              // <Image
+              //   alt={product.name || 'Product Image'}
+              //   className={s.productImage}
+              //   src={product.images[0]?.url || placeholderImg}
+              //   height={540}
+              //   width={540}
+              //   quality="85"
+              //   layout="responsive"
+              //   {...imgProps}
+              // />
+            )} */}
           </div>
         </>
       )}
