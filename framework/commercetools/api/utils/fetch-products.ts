@@ -3,10 +3,7 @@ import type { GraphQLFetcher } from '@commerce/api'
 import Commercetools from '../../utils/commercetools'
 import { provider } from '..'
 
-const fetchGraphqlApi: GraphQLFetcher = async (
-  query: string,
-  { variables } = {}
-) => {
+const fetchProducts = async (query?: any) => {
   const { config } = provider
   const commercetools = Commercetools({
     clientId: config.clientId,
@@ -18,20 +15,13 @@ const fetchGraphqlApi: GraphQLFetcher = async (
   })
   const { requestExecute } = commercetools
   try {
-    const result = await requestExecute
-      .graphql()
-      .post({
-        body: {
-          query,
-          variables,
-        },
-      })
+    return await requestExecute
+      .productProjections()
+      .get({ queryArgs: query })
       .execute()
-
-    return result.body
   } catch (err) {
     throw err
   }
 }
 
-export default fetchGraphqlApi
+export default fetchProducts

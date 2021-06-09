@@ -3,10 +3,12 @@ import {
   CommerceAPI,
   CommerceAPIConfig,
   getCommerceApi as commerceApi,
+  GraphQLFetcherResult,
+  CommerceAPIFetchOptions,
 } from '@commerce/api'
-import fetchGraphqlApi from './utils/fetch-graphql-api'
+import fetchGraphql from './utils/fetch-graphql-api'
 import fetchStoreApi from './utils/fetch-store-api'
-
+import fetchProducts from './utils/fetch-products'
 import getProduct from './operations/get-product'
 import getAllProducts from './operations/get-all-products'
 import getAllProductPaths from './operations/get-all-product-paths'
@@ -16,72 +18,113 @@ import login from './operations/login'
 import getCustomerWishlist from './operations/get-customer-wishlist'
 import getSiteInfo from './operations/get-site-info'
 
+// export interface CommercetoolsConfig extends CommerceAPIConfig {
+//   applyLocale?: boolean
+//   projectKey: string
+//   clientSecret: string
+//   clientId: string
+//   authUrl: string
+//   apiUrl: string
+//   scopes: string
+//   storeApiFetch<T>(endpoint: string, options?: RequestInit): Promise<T>
+// }
+
 export interface CommercetoolsConfig extends CommerceAPIConfig {
-  applyLocale?: boolean
+  // Indicates if the returned metadata with translations should be applied to the
+  // data or returned as it is
   projectKey: string
-  clientSecret: string
   clientId: string
-  authUrl: string
-  apiUrl: string
-  scopes: string
-  storeApiFetch<T>(endpoint: string, options?: RequestInit): Promise<T>
+  clientSecret: string
+  host: string
+  oauthHost: string
+  concurrency: string | number
+  fetch<Data = any, Variables = any>(
+    query: string,
+    queryData?: CommerceAPIFetchOptions<Variables>,
+    fetchOptions?: RequestInit
+  ): Promise<GraphQLFetcherResult<Data>>
+  fetchProducts: typeof fetchProducts
 }
 
-const PROJECT_KEY = process.env.CTP_PROJECT_KEY
-const CLIENT_SECRET = process.env.CTP_CLIENT_SECRET
-const CLIENT_ID = process.env.CTP_CLIENT_ID
-const AUTH_URL = process.env.CTP_AUTH_URL
-const API_URL = process.env.CTP_API_URL
-const COMMERCE_URL = process.env.CTP_GRAPHQL_URL
-const SCOPES = process.env.CTP_SCOPES
-const ACCESS_TOKEN = process.env.CTP_ACCESS_TOKEN
+export interface CommercetoolsConfig extends CommerceAPIConfig {
+  // Indicates if the returned metadata with translations should be applied to the
+  // data or returned as it is
+  projectKey: string
+  clientId: string
+  clientSecret: string
+  host: string
+  oauthHost: string
+  concurrency: string | number
+  fetch<Data = any, Variables = any>(
+    query: string,
+    queryData?: CommerceAPIFetchOptions<Variables>,
+    fetchOptions?: RequestInit
+  ): Promise<GraphQLFetcherResult<Data>>
+  fetchProducts: typeof fetchProducts
+}
+
+const PROJECT_KEY = process.env.CTP_PROJECT_KEY || 'projectKey'
+const CLIENT_ID = process.env.CTP_CLIENT_ID || 'projectKey'
+const CLIENT_SECRET = process.env.CTP_CLIENT_SECRET || 'projectKey'
+const AUTH_URL = process.env.CTP_AUTH_URL || 'projectKey'
+const API_URL = process.env.CTP_API_URL || 'projectKey'
+const CONCURRENCY = process.env.CTP_CONCURRENCY || 0
 
 if (!API_URL) {
   throw new Error(
-    `The environment variable CTP_API_URL is missing and it's required`
+    `The environment variable CTP_API_URL is missing and it's required to access your store`
+  )
+}
+
+if (!PROJECT_KEY) {
+  throw new Error(
+    `The environment variable CTP_PROJECT_KEY is missing and it's required to access your store`
   )
 }
 
 if (!AUTH_URL) {
   throw new Error(
-    `The environment variable CTP_AUTH_URL is missing and it's required`
+    `The environment variables CTP_AUTH_URL have to be set in order to access your store`
   )
 }
 
-if (!COMMERCE_URL) {
-  throw new Error(
-    `The environment variable CTP_GRAPHQL_URL is missing and it's required`
-  )
-}
-
-if (!ACCESS_TOKEN) {
-  throw new Error(
-    `The environment variable CTP_ACCESS_TOKEN is missing and it's required`
-  )
-}
-
-if (!(PROJECT_KEY && CLIENT_ID && CLIENT_SECRET && SCOPES)) {
-  throw new Error(
-    `The environment variables CTP_PROJECT_KEY, CTP_CLIENT_ID, CTP_CLIENT_SECRET and CTP_SCOPES have to be set`
-  )
-}
+const ONE_DAY = 60 * 60 * 24
 
 const config: CommercetoolsConfig = {
-  applyLocale: false,
+  commerceUrl: '',
+  host: API_URL,
   projectKey: PROJECT_KEY,
-  clientSecret: CLIENT_SECRET,
   clientId: CLIENT_ID,
-  authUrl: AUTH_URL,
-  apiUrl: API_URL,
-  scopes: SCOPES,
-  commerceUrl: COMMERCE_URL,
-  apiToken: ACCESS_TOKEN,
+  clientSecret: CLIENT_SECRET,
+  oauthHost: AUTH_URL,
+  concurrency: CONCURRENCY,
+  apiToken: '',
   cartCookie: '',
-  cartCookieMaxAge: 60 * 60 * 24 * 30,
-  fetch: fetchGraphqlApi,
+  cartCookieMaxAge: 0,
   customerCookie: '',
-  storeApiFetch: fetchStoreApi,
+  // customerCookie: 'SHOP_TOKEN',
+  // cartCookie: process.env.BIGCOMMERCE_CART_COOKIE ?? 'bc_cartId',
+  // cartCookieMaxAge: ONE_DAY * 30,
+  fetch: fetchGraphql,
+  fetchProducts: fetchProducts,
 }
+
+// const config: CommercetoolsConfig = {
+//   applyLocale: false,
+//   projectKey: PROJECT_KEY,
+//   clientSecret: CLIENT_SECRET,
+//   clientId: CLIENT_ID,
+//   authUrl: AUTH_URL,
+//   apiUrl: API_URL,
+//   scopes: SCOPES,
+//   commerceUrl: COMMERCE_URL,
+//   apiToken: ACCESS_TOKEN,
+//   cartCookie: '',
+//   cartCookieMaxAge: 60 * 60 * 24 * 30,
+//   fetch: fetchGraphqlApi,
+//   customerCookie: '',
+//   storeApiFetch: fetchStoreApi,
+// }
 
 const operations = {
   getAllPages,

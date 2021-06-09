@@ -36,8 +36,10 @@ export default function getAllProductPathsOperation({
     const config = commerce.getConfig(cfg)
     // RecursivePartial forces the method to check for every prop in the data, which is
     // required in case there's a custom `query`
-    const data: any = await config.storeApiFetch('/product-projections')
-    const paths = data.results.map((prod) => ({ path: `/${prod.slug.en}` }))
+    const data: any = await config.fetchProducts(query)
+    const paths = data.body.results.map((prod: any) => ({
+      path: `/${prod.slug.en}`,
+    }))
 
     return {
       products: paths,
