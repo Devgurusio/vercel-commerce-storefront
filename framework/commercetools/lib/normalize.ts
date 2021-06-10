@@ -15,6 +15,13 @@ import type {
   LineItem,
 } from '../types/cart'
 
+import type {
+  CommercetoolsBrands,
+  CommercetoolsCategory,
+  Category,
+  Brand,
+} from '../types/site'
+
 function setProductPrice(prices: CommerceToolsProductPrice): ProductPrice {
   return {
     value: prices.value.centAmount,
@@ -112,5 +119,35 @@ function normalizeLineItem(item: CommercetoolsLineItems): LineItem {
     },
     path: item.productSlug['en'],
     discounts: [],
+  }
+}
+
+type Site = { categories: Category[]; brands: Brand[] }
+
+export function normalizeSite(
+  ctCategories: CommercetoolsCategory[],
+  ctBrands: CommercetoolsBrands[]
+): Site {
+  const categories = ctCategories.map((ctCategory) => {
+    return {
+      id: ctCategory.id,
+      name: ctCategory.name,
+      slug: ctCategory.slug,
+      path: ctCategory.slug,
+    }
+  })
+
+  const brands = ctBrands.map((ctBrand) => {
+    return {
+      name: ctBrand.label,
+      node: {
+        path: `brands/${ctBrand.key}`,
+      },
+    }
+  })
+
+  return {
+    categories,
+    brands,
   }
 }

@@ -4,6 +4,7 @@ import type {
   OperationOptions,
 } from '@commerce/api/operations'
 import { Provider, CommercetoolsConfig } from '..'
+import { loginMutation } from 'framework/bigcommerce/api/operations/login'
 
 export default function loginOperation({
   commerce,
@@ -23,7 +24,7 @@ export default function loginOperation({
   ): Promise<T['data']>
 
   async function login<T extends { variables: any; data: any }>({
-    query = '',
+    query = loginMutation,
     variables,
     res: response,
     config: cfg,
@@ -34,8 +35,10 @@ export default function loginOperation({
     config?: Partial<CommercetoolsConfig>
   }): Promise<T['data']> {
     const config = commerce.getConfig(cfg)
+    const data = await config.fetch(query, { variables })
+    console.log(data)
     return {
-      result: '',
+      result: data,
     }
   }
 
