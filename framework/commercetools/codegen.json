@@ -1,0 +1,26 @@
+{
+  "schema": {},
+  "documents": [
+    {
+      "./framework/commercetools/**/*.{ts,tsx}": {
+        "noRequire": true
+      }
+    }
+  ],
+  "generates": {
+    "./framework/commercetools/schema.d.ts": {
+      "plugins": ["typescript", "typescript-operations"],
+      "config": {
+        "scalars": {
+          "ID": "string"
+        }
+      }
+    },
+    "./framework/commercetools/schema.graphql": {
+      "plugins": ["schema-ast"]
+    }
+  },
+  "hooks": {
+    "afterAllFileWrite": ["prettier --write"]
+  }
+}
