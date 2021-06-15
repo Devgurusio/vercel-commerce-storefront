@@ -5,7 +5,7 @@ import { Provider } from '@commerce'
 // import { handler as useRemoveItem } from './cart/use-remove-item'
 // import { handler as useCustomer } from './customer/use-customer'
 // import { handler as useSearch } from './product/use-search'
-// import { handler as useLogin } from './auth/use-login'
+import { handler as useLogin } from './auth/use-login'
 // import { handler as useLogout } from './auth/use-logout'
 // import { handler as useSignup } from './auth/use-signup'
 import fetcher from './fetcher'
@@ -19,6 +19,7 @@ export const commercetoolsProvider = {
   // customer: { useCustomer },
   // products: { useSearch },
   // auth: { useLogin, useLogout, useSignup }
+  auth: { useLogin },
 }
 
 export type CommercetoolsProvider = typeof commercetoolsProvider

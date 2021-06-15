@@ -1,5 +1,6 @@
 import { FetcherError } from '@commerce/utils/errors'
 import type { Fetcher } from '@commerce/utils/types'
+import Commercetools from './utils/commercetools'
 
 async function getText(res: Response) {
   try {
@@ -17,25 +18,35 @@ async function getError(res: Response) {
   return new FetcherError({ message: await getText(res), status: res.status })
 }
 
-const fetcher: Fetcher = async ({
-  url,
-  method = 'POST',
-  variables,
-  body: bodyObj,
-}) => {
-  const hasBody = Boolean(variables || bodyObj)
-  const body = hasBody
-    ? JSON.stringify(variables ? { variables } : bodyObj)
-    : undefined
-  const headers = hasBody ? { 'Content-Type': 'application/json' } : undefined
-  const res = await fetch(url!, { method, body, headers })
+const fetcher: Fetcher = async ({ variables, body: bodyObj, query }) => {
+  const commercetools = Commercetools({
+    clientId: 'OfwXOPjkddECcNQhfZPaS6pZ',
+    clientSecret: 'Sqj896_Iv2ovUVayskpxCGKlcEYabTy4',
+    projectKey: 'vercel-commerce-20210601',
+    host: 'https://api.us-central1.gcp.commercetools.com',
+    oauthHost: 'https://auth.us-central1.gcp.commercetools.com',
+    concurrency: 10,
+  })
 
-  if (res.ok) {
-    const { data } = await res.json()
-    return data
+  console.log('data body: ', bodyObj)
+  console.log('data query: ', query)
+  console.log('data variables: ', variables.data)
+
+  const { requestExecute } = commercetools
+
+  try {
+    return await requestExecute
+      .graphql()
+      .post({
+        body: {
+          query: query,
+          variables: variables.data,
+        },
+      })
+      .execute()
+  } catch (err) {
+    throw err
   }
-
-  throw await getError(res)
 }
 
 export default fetcher
