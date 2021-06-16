@@ -1,9 +1,7 @@
-import { FetcherError } from '@commerce/utils/errors'
-import type { GraphQLFetcher } from '@commerce/api'
 import Commercetools from '../../utils/commercetools'
 import { provider } from '..'
 
-const fetchProducts = async (query?: any) => {
+const fetchProducts = async (query?: any, isSearch?: boolean) => {
   const { config } = provider
   const commercetools = Commercetools({
     clientId: config.clientId,
@@ -15,10 +13,18 @@ const fetchProducts = async (query?: any) => {
   })
   const { requestExecute } = commercetools
   try {
-    return await requestExecute
-      .productProjections()
-      .get({ queryArgs: query })
-      .execute()
+    if (isSearch) {
+      return await requestExecute
+        .productProjections()
+        .search()
+        .get({ queryArgs: query })
+        .execute()
+    } else {
+      return await requestExecute
+        .productProjections()
+        .get({ queryArgs: query })
+        .execute()
+    }
   } catch (err) {
     throw err
   }

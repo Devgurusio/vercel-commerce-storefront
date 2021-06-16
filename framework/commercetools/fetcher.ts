@@ -19,7 +19,7 @@ async function getError(res: Response) {
 
 const fetcher: Fetcher = async ({
   url,
-  method = 'POST',
+  method = 'GET',
   variables,
   body: bodyObj,
 }) => {

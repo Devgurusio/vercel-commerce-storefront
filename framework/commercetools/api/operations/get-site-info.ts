@@ -1,6 +1,8 @@
 import { Provider, CommercetoolsConfig } from '../'
 import { OperationContext } from '@commerce/api/operations'
 import { Category } from '@commerce/types/site'
+import { getAllCategoriesAndBrandsQuery } from '../../utils/queries/get-category'
+import { normalizeSite } from '../../lib/normalize'
 
 export type GetSiteInfoResult<
   T extends { categories: any[]; brands: any[] } = {
@@ -13,7 +15,7 @@ export default function getSiteInfoOperation({
   commerce,
 }: OperationContext<Provider>) {
   async function getSiteInfo({
-    query,
+    query = getAllCategoriesAndBrandsQuery,
     variables,
     config: cfg,
   }: {
@@ -23,24 +25,14 @@ export default function getSiteInfoOperation({
     preview?: boolean
   } = {}): Promise<GetSiteInfoResult> {
     const config = commerce.getConfig(cfg)
-    // RecursivePartial forces the method to check for every prop in the data, which is
-    // required in case there's a custom `query`
-    // const { data } = await config.fetch(query, {
-    //   variables,
-    // })
-    // const collections = data.collections?.items.map((i) => ({
-    //   ...i,
-    //   entityId: i.id,
-    //   path: i.slug,
-    //   productCount: i.productVariants.totalItems,
-    // }))
-    // const categories:any = []
-    // const brands = [] as any[]
-
-    return {
-      categories: [],
-      brands: [],
-    }
+    const {
+      data: { categories, productTypes },
+    }: any = await config.fetch(query)
+    const ctCategories = categories.results
+    const ctBrands =
+      productTypes?.results[0]?.attributeDefinitions?.results[0]?.type?.values
+        ?.results
+    return normalizeSite(ctCategories, ctBrands)
   }
 
   return getSiteInfo

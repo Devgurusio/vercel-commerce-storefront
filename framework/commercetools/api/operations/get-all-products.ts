@@ -28,25 +28,7 @@ export default function getAllProductsOperation({
     const data: any = await config.fetchProducts()
 
     const prods = data.body.results.map((prod: any) => normalizeProduct(prod))
-    // {
-    // return {
-    //   id: prod.id,
-    //   name: prod.name.en,
-    //   description: prod.metaDescription
-    //     ? prod.metaDescription.en
-    //     : 'No Description',
-    //   slug: prod.slug.en,
-    //   path: prod.slug.en,
-    //   images: prod.masterVariant.images,
-    //   variants: [],
-    //   options: [],
-    //   price: {
-    //     value: prod.masterVariant.prices[0].value.centAmount / 100,
-    //     currencyCode: prod.masterVariant.prices[0].value.currencyCode,
-    //   },
-    //   sku: prod.masterVariant.sku,
-    // }
-    // })
+
     return {
       products: prods,
     }

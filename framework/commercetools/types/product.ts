@@ -1,5 +1,4 @@
 import * as Core from '@commerce/types/product'
-
 export type CommercetoolsProducts = {
   id: string
   name: LocalString
@@ -10,7 +9,6 @@ export type CommercetoolsProducts = {
   variants: CommercetoolsProductVariant[]
   published: boolean
 }
-
 export type CommercetoolsProductVariant = {
   id: string
   key: string
@@ -19,17 +17,14 @@ export type CommercetoolsProductVariant = {
   prices: CommerceToolsProductPrice[]
   attributes: ProductAttributes[]
 }
-
 export type ProductAttributes = {
   name: string
-  value: string | AttributeDefinition
+  value: string | AttributeDefinition | boolean | number
 }
-
 export type AttributeDefinition = {
   key: string
   label: string
 }
-
 export type Images = {
   url: string
   dimensions: {
@@ -37,17 +32,20 @@ export type Images = {
     h: number
   }
 }
-
 export type CommerceToolsProductPrice = {
   id: string
-  value: {
-    type: string
-    currencyCode: string
-    centAmount: number
-    fractionDigits: number
-  }
+  value: Money
+  discounted: DiscountedPrice
 }
-
+export type DiscountedPrice = {
+  value: Money
+}
+export type Money = {
+  type: string
+  currencyCode: string
+  centAmount: number
+  fractionDigits: number
+}
 export type LocalString = {
   en: string
   'es-AR': string
@@ -55,12 +53,10 @@ export type LocalString = {
   'es-PE': string
   de: string
 }
-
 // get Product
 export type GetProductById = {
   id: string
 }
-
 export type Product = Core.Product
 export type ProductVariant = Core.ProductVariant
 export type ProductPrice = Core.ProductPrice
