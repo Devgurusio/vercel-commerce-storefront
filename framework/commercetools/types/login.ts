@@ -1,5 +1,5 @@
 import * as Core from '@commerce/types/login'
-import type { LoginMutationVariables } from '../schema'
+//import type { LoginMutationVariables } from '../schema'
 
 export * from '@commerce/types/login'
 
@@ -9,5 +9,5 @@ export type CommercetoolsLogin = {
 }
 
 export type LoginOperation = Core.LoginOperation & {
-  variables: LoginMutationVariables
+  variables: any
 }

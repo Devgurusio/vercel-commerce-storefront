@@ -6,6 +6,8 @@ import type {
 import type { LoginOperation } from '../../types/login'
 import { Provider, CommercetoolsConfig } from '..'
 import { loginMutation } from '../../utils/mutations/log-in-mutation'
+import { serialize } from 'cookie'
+const jwt = require('jwt-simple')
 
 export default function loginOperation({
   commerce,
@@ -28,6 +30,7 @@ export default function loginOperation({
     query = loginMutation,
     variables,
     config: cfg,
+    res: response,
   }: {
     query?: string
     variables: T['variables']
@@ -35,17 +38,30 @@ export default function loginOperation({
     config?: Partial<CommercetoolsConfig>
   }): Promise<T['data']> {
     const config = commerce.getConfig(cfg)
+    const { customerCookie } = config
+    const customerExpires = new Date(Date.now() + 30 * 30) // 1 month
 
     const { data } = await config.fetch<any>(query, {
       variables,
     })
 
-    console.log('data login::: ', data)
+    const customerToken = jwt.encode(
+      data.customerSignIn.customer.id,
+      customerCookie
+    )
+
+    response.setHeader(
+      'Set-Cookie',
+      serialize(customerCookie, customerToken, {
+        maxAge: 30,
+        path: '/',
+        expires: customerExpires,
+      })
+    )
 
     return {
-      result: data.login.id,
+      result: data.customerSignIn.customer.id,
     }
   }
-  console.log(login)
   return login
 }

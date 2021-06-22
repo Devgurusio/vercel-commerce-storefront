@@ -49,13 +49,8 @@ const Layout: FC<Props> = ({
   children,
   pageProps: { categories = [], ...pageProps },
 }) => {
-  const {
-    displaySidebar,
-    displayModal,
-    closeSidebar,
-    closeModal,
-    modalView,
-  } = useUI()
+  const { displaySidebar, displayModal, closeSidebar, closeModal, modalView } =
+    useUI()
   const { acceptedCookies, onAcceptCookies } = useAcceptCookies()
   const { locale = 'en-US' } = useRouter()
 
@@ -81,7 +76,7 @@ const Layout: FC<Props> = ({
           <CartSidebarView />
         </Sidebar>
 
-        <FeatureBar
+        {/*<FeatureBar
           title="This site uses cookies to improve your experience. By clicking, you agree to our Privacy Policy."
           hide={acceptedCookies}
           action={
@@ -89,7 +84,7 @@ const Layout: FC<Props> = ({
               Accept cookies
             </Button>
           }
-        />
+        />*/}
       </div>
     </CommerceProvider>
   )
