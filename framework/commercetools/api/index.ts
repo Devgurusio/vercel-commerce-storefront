@@ -6,18 +6,19 @@ import {
   GraphQLFetcherResult,
   CommerceAPIFetchOptions,
 } from '@commerce/api'
-import fetchGraphql from './utils/fetch-graphql-api'
-import fetchProducts from './utils/fetch-products'
-import getProduct from './operations/get-product'
-import getAllProducts from './operations/get-all-products'
-import getAllProductPaths from './operations/get-all-product-paths'
-import getPage from './operations/get-page'
-import getAllPages from './operations/get-all-pages'
-import login from './operations/login'
-import getCustomerWishlist from './operations/get-customer-wishlist'
-import getSiteInfo from './operations/get-site-info'
+import fetchGraphql from '@framework/api/utils/fetch-graphql-api'
+import fetchProducts from '@framework/api/utils/fetch-products'
+import getProduct from '@framework/api/operations/get-product'
+import getAllProducts from '@framework/api/operations/get-all-products'
+import getAllProductPaths from '@framework/api/operations/get-all-product-paths'
+import getPage from '@framework/api/operations/get-page'
+import getAllPages from '@framework/api/operations/get-all-pages'
+import login from '@framework/api/operations/login'
+import getCustomerWishlist from '@framework/api/operations/get-customer-wishlist'
+import getSiteInfo from '@framework/api/operations/get-site-info'
 
 export interface CommercetoolsConfig extends CommerceAPIConfig {
+  locale: string
   projectKey: string
   clientId: string
   clientSecret: string
@@ -60,6 +61,7 @@ if (!AUTH_URL) {
 const ONE_DAY = 60 * 60 * 24
 
 const config: CommercetoolsConfig = {
+  locale: '',
   commerceUrl: '',
   host: API_URL,
   projectKey: PROJECT_KEY,

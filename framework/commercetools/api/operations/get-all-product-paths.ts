@@ -1,7 +1,6 @@
 import { OperationContext, OperationOptions } from '@commerce/api/operations'
-import { Provider } from '../index'
 import { GetAllProductPathsOperation } from '@commerce/types/product'
-import { CommercetoolsConfig } from '../../api'
+import { CommercetoolsConfig, Provider } from '@framework/api'
 
 export type GetAllProductPathsResult = {
   products: Array<{ node: { path: string } }>

@@ -1,7 +1,7 @@
 import { FetcherError } from '@commerce/utils/errors'
 import type { GraphQLFetcher } from '@commerce/api'
-import Commercetools from '../../utils/commercetools'
-import { provider } from '..'
+import Commercetools from '@framework/utils/commercetools'
+import { provider } from '@framework/api'
 
 const fetchGraphqlApi: GraphQLFetcher = async (
   query: string,

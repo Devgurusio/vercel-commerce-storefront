@@ -5,22 +5,22 @@ import type {
   CommercetoolsProductVariant,
   CommerceToolsProductPrice,
   ProductPrice,
-} from '../types/product'
+} from '@framework/types/product'
 import type {
   Cart,
   CommercetoolsCart,
   CommercetoolsLineItems,
   LineItem,
-} from '../types/cart'
+} from '@framework/types/cart'
 
 import type {
   CommercetoolsBrands,
   CommercetoolsCategory,
   Category,
   Brand,
-} from '../types/site'
+} from '@framework/types/site'
 
-import { arrayToTree } from './array-to-tree'
+import { arrayToTree } from '@framework/lib/array-to-tree'
 
 function normalizeVariants(
   variants: CommercetoolsProductVariant[],

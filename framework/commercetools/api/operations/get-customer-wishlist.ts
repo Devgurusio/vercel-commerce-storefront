@@ -1,5 +1,5 @@
 import { OperationContext } from '@commerce/api/operations'
-import { Provider, CommercetoolsConfig } from '../'
+import { Provider, CommercetoolsConfig } from '@framework/api'
 
 export default function getCustomerWishlistOperation({
   commerce,

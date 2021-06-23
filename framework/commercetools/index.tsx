@@ -4,13 +4,16 @@ import {
   CommerceProvider as CoreCommerceProvider,
   useCommerce as useCoreCommerce,
 } from '@commerce'
-import { commercetoolsProvider, CommercetoolsProvider } from './provider'
+import {
+  commercetoolsProvider,
+  CommercetoolsProvider,
+} from '@framework/provider'
 
 export { commercetoolsProvider }
 export type { CommercetoolsProvider }
 
 export const commercetoolsConfig: CommerceConfig = {
-  locale: 'en-us',
+  locale: 'en-US',
   cartCookie: '',
 }
 

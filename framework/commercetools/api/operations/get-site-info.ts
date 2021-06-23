@@ -1,8 +1,8 @@
-import { Provider, CommercetoolsConfig } from '../'
+import { Provider, CommercetoolsConfig } from '@framework/api'
 import { OperationContext } from '@commerce/api/operations'
 import { Category } from '@commerce/types/site'
-import { getAllCategoriesAndBrandsQuery } from '../../utils/queries/get-category'
-import { normalizeSite } from '../../lib/normalize'
+import { getAllCategoriesAndBrandsQuery } from '@framework/utils/queries/get-category'
+import { normalizeSite } from '@framework/lib/normalize'
 
 export type GetSiteInfoResult<
   T extends { categories: any[]; brands: any[] } = {

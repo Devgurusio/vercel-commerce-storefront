@@ -1,4 +1,4 @@
-import { CommercetoolsConfig, Provider } from '../'
+import { CommercetoolsConfig, Provider } from '@framework/api'
 import { OperationContext } from '@commerce/api/operations'
 
 export type Page = any

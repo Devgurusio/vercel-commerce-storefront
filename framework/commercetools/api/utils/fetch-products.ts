@@ -1,5 +1,5 @@
-import Commercetools from '../../utils/commercetools'
-import { provider } from '..'
+import Commercetools from '@framework/utils/commercetools'
+import { provider } from '@framework/api'
 
 const fetchProducts = async (query?: any, isSearch?: boolean) => {
   const { config } = provider

@@ -1,6 +1,6 @@
 import { Product } from '@commerce/types/product'
-import { Provider, CommercetoolsConfig } from '../'
-import { normalizeProduct } from '../../lib/normalize'
+import { Provider, CommercetoolsConfig } from '@framework/api'
+import { normalizeProduct } from '@framework/lib/normalize'
 import { OperationContext } from '@commerce/api/operations'
 
 export default function getAllProductsOperation({
