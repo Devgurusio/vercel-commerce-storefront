@@ -38,6 +38,7 @@ export default function getAllProductPathsOperation({
     // required in case there's a custom `query`
     const data: any = await config.fetchProducts(query)
     const paths = data.body.results.map((prod: any) => ({
+      // TODO: TEC-264: Handle the locale properly
       path: `/${prod.slug.en}`,
     }))
 

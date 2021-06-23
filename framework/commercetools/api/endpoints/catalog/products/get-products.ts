@@ -9,6 +9,7 @@ const getProducts: ProductsEndpoint['handlers']['getProducts'] = async ({
   const queries: string[] = []
   const isSearch = true
   if (search) {
+    // TODO: TEC-264: Handle the locale properly
     queries.push(`name.en: "${search}"`)
   }
   if (categoryId) {
@@ -19,18 +20,7 @@ const getProducts: ProductsEndpoint['handlers']['getProducts'] = async ({
   }
   let sorting
   if (sort) {
-    switch (sort) {
-      case 'price-asc':
-        sorting = 'price asc'
-        break
-      case 'price-desc':
-        sorting = 'price desc'
-        break
-      case 'latest-desc':
-      default:
-        sorting = 'lastModifiedAt desc'
-        break
-    }
+    sorting = getSortingValue(sort)
   }
 
   const query = {
@@ -47,6 +37,18 @@ const getProducts: ProductsEndpoint['handlers']['getProducts'] = async ({
       products: products.map((item) => normalizeProduct(item)),
     },
   })
+}
+
+function getSortingValue(sort: string): string {
+  switch (sort) {
+    case 'price-asc':
+      return 'price asc'
+    case 'price-desc':
+      return 'price desc'
+    case 'latest-desc':
+    default:
+      return 'lastModifiedAt desc'
+  }
 }
 
 export default getProducts

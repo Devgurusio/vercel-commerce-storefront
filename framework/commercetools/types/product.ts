@@ -1,5 +1,5 @@
 import * as Core from '@commerce/types/product'
-export type CommercetoolsProducts = {
+export type CommercetoolsProduct = {
   id: string
   name: LocalString
   description: LocalString
@@ -14,6 +14,7 @@ export type CommercetoolsProductVariant = {
   key: string
   sku: string
   images: Images[]
+  price?: CommerceToolsProductPrice
   prices: CommerceToolsProductPrice[]
   attributes: ProductAttributes[]
 }

@@ -1,5 +1,5 @@
 import type {
-  CommercetoolsProducts,
+  CommercetoolsProduct,
   Product,
   ProductVariant,
   CommercetoolsProductVariant,
@@ -35,13 +35,13 @@ function normalizeVariants(
   })
 }
 
-function normalicePrice(price: CommerceToolsProductPrice): ProductPrice {
+function normalizePrice(price: CommerceToolsProductPrice): ProductPrice {
   const value =
     price.discounted && price.discounted.value
       ? price.discounted.value.centAmount
       : price.value.centAmount
   return {
-    value,
+    value: value / 100,
     currencyCode: price.value.currencyCode,
     retailPrice: 0,
     salePrice: 0,
@@ -51,20 +51,24 @@ function normalicePrice(price: CommerceToolsProductPrice): ProductPrice {
   }
 }
 
-export function normalizeProduct(data: CommercetoolsProducts): Product {
+export function normalizeProduct(data: CommercetoolsProduct): Product {
   return {
     id: data.id,
     name: data.name.en,
     description:
-      data.metaDescription && data.metaDescription.en
-        ? data.metaDescription.en
+      data.description && data.description.en
+        ? data.description.en
         : 'No description',
     slug: data.slug.en,
     path: data.slug.en,
     images: data.masterVariant.images,
     variants: normalizeVariants(data.variants, data.published),
     options: [],
-    price: normalicePrice(data.masterVariant.prices[0]),
+    price: normalizePrice(
+      data.masterVariant.price
+        ? data.masterVariant.price
+        : data.masterVariant.prices[0]
+    ),
     sku: data.masterVariant.sku,
   }
 }
@@ -81,8 +85,8 @@ export function normalizeCart(data: CommercetoolsCart): Cart {
     data.taxedPrice &&
     data.taxedPrice.totalGross &&
     data.taxedPrice.totalGross.centAmount
-      ? data.taxedPrice.totalGross.centAmount
-      : data.totalPrice.centAmount
+      ? data.taxedPrice.totalGross.centAmount / 100
+      : data.totalPrice.centAmount / 100
   return {
     id: data.id,
     customerId: data.customerId,
@@ -107,7 +111,7 @@ function normalizeLineItem(item: CommercetoolsLineItems): LineItem {
     id: item.id,
     variantId: item.variant.id,
     productId: item.productId,
-    name: item.name.en,
+    name: item.name,
     quantity: item.quantity,
     variant: {
       id: item.variant.id,
@@ -136,10 +140,10 @@ function normalizeLineItem(item: CommercetoolsLineItems): LineItem {
             : undefined,
       },
       requiresShipping: false,
-      price,
+      price: price / 100,
       listPrice: 0,
     },
-    path: item.productSlug.en,
+    path: item.productSlug,
     discounts: [],
   }
 }
@@ -153,6 +157,7 @@ export function normalizeSite(
   const categories = ctCategories.map((ctCategory) => {
     return {
       id: ctCategory.id,
+      // TODO: TEC-264 we need to handle locale properly
       name: ctCategory.name,
       slug: ctCategory.slug,
       path: ctCategory.slug,
