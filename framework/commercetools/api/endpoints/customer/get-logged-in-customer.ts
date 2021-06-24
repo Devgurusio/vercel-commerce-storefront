@@ -3,7 +3,6 @@ import getCustomerQuery from '../../../utils/queries/get-customer-query'
 const jwt = require('jwt-simple')
 
 export const getLoggedInCustomerQuery = getCustomerQuery
-
 export type Customer = NonNullable<any['customer']>
 const getLoggedInCustomer: CustomerEndpoint['handlers']['getLoggedInCustomer'] =
   async ({ req, res, config }) => {

@@ -19,6 +19,8 @@ import getCustomerWishlist from './operations/get-customer-wishlist'
 import getSiteInfo from './operations/get-site-info'
 import type { LoginAPI } from './endpoints/login'
 import type { CustomerAPI } from './endpoints/customer'
+import type { LogoutAPI } from './endpoints/logout'
+import type { SignupAPI } from './endpoints/signup'
 
 // export interface CommercetoolsConfig extends CommerceAPIConfig {
 //   applyLocale?: boolean
@@ -30,23 +32,6 @@ import type { CustomerAPI } from './endpoints/customer'
 //   scopes: string
 //   storeApiFetch<T>(endpoint: string, options?: RequestInit): Promise<T>
 // }
-
-export interface CommercetoolsConfig extends CommerceAPIConfig {
-  // Indicates if the returned metadata with translations should be applied to the
-  // data or returned as it is
-  projectKey: string
-  clientId: string
-  clientSecret: string
-  host: string
-  oauthHost: string
-  concurrency: string | number
-  fetch<Data = any, Variables = any>(
-    query: string,
-    queryData?: CommerceAPIFetchOptions<Variables>,
-    fetchOptions?: RequestInit
-  ): Promise<GraphQLFetcherResult<Data>>
-  fetchProducts: typeof fetchProducts
-}
 
 export interface CommercetoolsConfig extends CommerceAPIConfig {
   // Indicates if the returned metadata with translations should be applied to the
@@ -140,7 +125,7 @@ const operations = {
   login,
 }
 
-export type APIs = LoginAPI | CustomerAPI
+export type APIs = LoginAPI | CustomerAPI | LogoutAPI | SignupAPI
 
 export const provider = { config, operations }
 
