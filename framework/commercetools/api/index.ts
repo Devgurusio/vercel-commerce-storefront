@@ -16,6 +16,9 @@ import getAllPages from '@framework/api/operations/get-all-pages'
 import login from '@framework/api/operations/login'
 import getCustomerWishlist from '@framework/api/operations/get-customer-wishlist'
 import getSiteInfo from '@framework/api/operations/get-site-info'
+import type { LoginAPI } from './endpoints/login'
+import type { CustomerAPI } from './endpoints/customer'
+import type { SignupAPI } from './endpoints/signup'
 
 export interface CommercetoolsConfig extends CommerceAPIConfig {
   locale: string
@@ -25,6 +28,7 @@ export interface CommercetoolsConfig extends CommerceAPIConfig {
   host: string
   oauthHost: string
   concurrency: string | number
+  cookieMaxAge: number
   fetch<Data = any, Variables = any>(
     query: string,
     queryData?: CommerceAPIFetchOptions<Variables>,
@@ -72,7 +76,8 @@ const config: CommercetoolsConfig = {
   apiToken: '',
   cartCookie: '',
   cartCookieMaxAge: 0,
-  customerCookie: '',
+  cookieMaxAge: 30,
+  customerCookie: 'customer_cookie',
   fetch: fetchGraphql,
   fetchProducts: fetchProducts,
 }
@@ -87,6 +92,8 @@ const operations = {
   getCustomerWishlist,
   login,
 }
+
+export type APIs = LoginAPI | CustomerAPI | SignupAPI
 
 export const provider = { config, operations }
 

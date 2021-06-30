@@ -2,7 +2,7 @@ import * as Core from '@commerce/types/customer'
 
 export * from '@commerce/types/customer'
 
-export type Customers = {
+export type CommercetoolsCustomer = {
   id: string
   version: number
   createdAt: string
