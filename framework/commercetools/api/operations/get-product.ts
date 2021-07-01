@@ -12,23 +12,23 @@ export default function getProductOperation({
   }: {
     variables: {
       slug?: string
-      id?: string
-      locale?: string
+      path?: string
     }
     config?: Partial<CommercetoolsConfig>
     preview?: boolean
   }): Promise<Product | {} | any> {
     const config = commerce.getConfig(cfg)
+    const locale = config.getLocale()
 
-    // TODO: TEC-264: Handle the locale properly
     const queryArg = {
-      where: `slug(en="${variables.slug}")`,
+      where: `slug(${locale}="${variables.slug}")`,
     }
-    const projection = await config.fetchProducts(queryArg)
-    const product = projection.body.results[0]
 
+    const projection = await config.fetchProducts(queryArg)
+
+    const product = projection.body.results[0]
     if (product) {
-      return { product: normalizeProduct(product) }
+      return { product: normalizeProduct(product, locale) }
     }
 
     return {}

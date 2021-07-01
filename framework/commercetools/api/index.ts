@@ -35,6 +35,7 @@ export interface CommercetoolsConfig extends CommerceAPIConfig {
     fetchOptions?: RequestInit
   ): Promise<GraphQLFetcherResult<Data>>
   fetchProducts: typeof fetchProducts
+  getLocale(): string
 }
 
 const PROJECT_KEY = process.env.CTP_PROJECT_KEY || 'projectKey'
@@ -65,7 +66,7 @@ if (!AUTH_URL) {
 const ONE_DAY = 60 * 60 * 24
 
 const config: CommercetoolsConfig = {
-  locale: '',
+  locale: 'en-US',
   commerceUrl: '',
   host: API_URL,
   projectKey: PROJECT_KEY,
@@ -80,6 +81,15 @@ const config: CommercetoolsConfig = {
   customerCookie: 'customer_cookie',
   fetch: fetchGraphql,
   fetchProducts: fetchProducts,
+
+  getLocale() {
+    if (this.locale) {
+      return this.locale.indexOf('-') != -1
+        ? this.locale.split('-')[0]
+        : this.locale
+    }
+    return 'en'
+  },
 }
 
 const operations = {

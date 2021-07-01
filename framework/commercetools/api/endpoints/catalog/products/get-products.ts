@@ -3,15 +3,12 @@ import { normalizeProduct } from '@framework/lib/normalize'
 
 const getProducts: ProductsEndpoint['handlers']['getProducts'] = async ({
   res,
-  body: { search, categoryId, brandId, sort },
+  body: { search, categoryId, brandId, sort, locale },
   config,
 }) => {
   const queries: string[] = []
   const isSearch = true
-  if (search) {
-    // TODO: TEC-264: Handle the locale properly
-    queries.push(`name.en: "${search}"`)
-  }
+
   if (categoryId) {
     queries.push(`categories.id: "${categoryId}"`)
   }
@@ -21,6 +18,13 @@ const getProducts: ProductsEndpoint['handlers']['getProducts'] = async ({
   let sorting
   if (sort) {
     sorting = getSortingValue(sort)
+  }
+  let currentLocale = 'en'
+  if (locale) {
+    currentLocale = getLocale(locale)
+  }
+  if (search) {
+    queries.push(`name.${currentLocale}: "${search}"`)
   }
 
   const query = {
@@ -34,7 +38,7 @@ const getProducts: ProductsEndpoint['handlers']['getProducts'] = async ({
   res.status(200).json({
     data: {
       found: data.body.total > 0,
-      products: products.map((item) => normalizeProduct(item)),
+      products: products.map((item) => normalizeProduct(item, currentLocale)),
     },
   })
 }
@@ -49,6 +53,13 @@ function getSortingValue(sort: string): string {
     default:
       return 'lastModifiedAt desc'
   }
+}
+
+function getLocale(locale: string): string {
+  if (locale.indexOf('-') != -1) {
+    return locale.split('-')[0]
+  }
+  return locale
 }
 
 export default getProducts

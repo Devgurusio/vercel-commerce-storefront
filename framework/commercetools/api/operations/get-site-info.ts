@@ -16,22 +16,29 @@ export default function getSiteInfoOperation({
 }: OperationContext<Provider>) {
   async function getSiteInfo({
     query = getAllCategoriesAndBrandsQuery,
-    variables,
     config: cfg,
   }: {
     query?: string
-    variables?: any
     config?: Partial<CommercetoolsConfig>
     preview?: boolean
   } = {}): Promise<GetSiteInfoResult> {
     const config = commerce.getConfig(cfg)
+    const locale = config.getLocale()
+    const brandAttribute = 'designer'
+    const variables = {
+      locale,
+      brandAttribute,
+    }
+
     const {
       data: { categories, productTypes },
-    }: any = await config.fetch(query)
+    }: any = await config.fetch(query, { variables })
+
     const ctCategories = categories.results
     const ctBrands =
       productTypes?.results[0]?.attributeDefinitions?.results[0]?.type?.values
         ?.results
+
     return normalizeSite(ctCategories, ctBrands)
   }
 

@@ -24,13 +24,14 @@ export const handler: SWRHook<SearchProductsHook> = {
     method: 'GET',
   },
   async fetcher({ input, options, fetch }) {
-    const { search, categoryId, brandId, sort } = input
+    const { search, categoryId, brandId, sort, locale } = input
     const url = new URL(options.url!, 'http://a')
 
     if (search) url.searchParams.set('search', search)
     if (categoryId) url.searchParams.set('categoryId', String(categoryId))
     if (brandId) url.searchParams.set('brandId', String(brandId))
     if (sort) url.searchParams.set('sort', sort)
+    if (locale) url.searchParams.set('locale', locale)
 
     return await fetch({
       url: url.pathname + url.search,
@@ -44,6 +45,7 @@ export const handler: SWRHook<SearchProductsHook> = {
         ['categoryId', input.categoryId],
         ['brandId', input.brandId],
         ['sort', input.sort],
+        ['locale', input.locale],
       ],
       swrOptions: {
         revalidateOnFocus: false,

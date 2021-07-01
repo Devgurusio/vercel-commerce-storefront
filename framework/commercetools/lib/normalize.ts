@@ -51,16 +51,19 @@ function normalizePrice(price: CommerceToolsProductPrice): ProductPrice {
   }
 }
 
-export function normalizeProduct(data: CommercetoolsProduct): Product {
+export function normalizeProduct(
+  data: CommercetoolsProduct,
+  locale: string
+): Product {
   return {
     id: data.id,
-    name: data.name.en,
+    name: data.name[locale],
     description:
-      data.description && data.description.en
-        ? data.description.en
+      data.description && data.description[locale]
+        ? data.description[locale]
         : 'No description',
-    slug: data.slug.en,
-    path: data.slug.en,
+    slug: data.slug[locale],
+    path: data.slug[locale],
     images: data.masterVariant.images,
     variants: normalizeVariants(data.variants, data.published),
     options: [],
