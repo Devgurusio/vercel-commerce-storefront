@@ -48,11 +48,7 @@ export type Money = {
   fractionDigits: number
 }
 export type LocalString = {
-  en: string
-  'es-AR': string
-  'es-CL': string
-  'es-PE': string
-  de: string
+  [index: string]: string
 }
 // get Product
 export type GetProductById = {

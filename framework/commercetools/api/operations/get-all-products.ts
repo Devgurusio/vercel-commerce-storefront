@@ -18,9 +18,13 @@ export default function getAllProductsOperation({
     preview?: boolean
   } = {}): Promise<{ products: Product[] | any[] }> {
     const config = commerce.getConfig(cfg)
+    const locale = config.getLocale()
+
     const data: any = await config.fetchProducts()
 
-    const prods = data.body.results.map((prod: any) => normalizeProduct(prod))
+    const prods = data.body.results.map((prod: any) =>
+      normalizeProduct(prod, locale)
+    )
 
     return {
       products: prods,
