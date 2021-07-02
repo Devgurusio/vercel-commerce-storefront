@@ -36,7 +36,7 @@ const LINKS = [
 ]
 
 const DropdownMenu: FC<DropdownMenuProps> = ({ open = false }) => {
-  //const logout = useLogout()
+  const logout = useLogout()
   const { pathname } = useRouter()
   const { theme, setTheme } = useTheme()
   const [display, setDisplay] = useState(false)
@@ -107,14 +107,14 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ open = false }) => {
                 </div>
               </a>
             </li>
-            {/*<li>
+            <li>
               <a
                 className={cn(s.link, 'border-t border-accents-2 mt-4')}
                 onClick={() => logout()}
               >
                 Logout
               </a>
-            </li>*/}
+            </li>
           </ul>
         )}
       </div>
