@@ -19,6 +19,7 @@ import getSiteInfo from '@framework/api/operations/get-site-info'
 import type { LoginAPI } from './endpoints/login'
 import type { CustomerAPI } from './endpoints/customer'
 import type { SignupAPI } from './endpoints/signup'
+import type { CartAPI } from '@framework/api/endpoints/cart'
 
 export interface CommercetoolsConfig extends CommerceAPIConfig {
   locale: string
@@ -29,6 +30,7 @@ export interface CommercetoolsConfig extends CommerceAPIConfig {
   oauthHost: string
   concurrency: string | number
   cookieMaxAge: number
+  currency: string
   fetch<Data = any, Variables = any>(
     query: string,
     queryData?: CommerceAPIFetchOptions<Variables>,
@@ -44,7 +46,7 @@ const CLIENT_SECRET = process.env.CTP_CLIENT_SECRET || 'projectKey'
 const AUTH_URL = process.env.CTP_AUTH_URL || 'projectKey'
 const API_URL = process.env.CTP_API_URL || 'projectKey'
 const CONCURRENCY = process.env.CTP_CONCURRENCY || 0
-
+const CURRENCY = process.env.CTP_CURRENCY || 'EUR'
 if (!API_URL) {
   throw new Error(
     `The environment variable CTP_API_URL is missing and it's required to access your store`
@@ -75,13 +77,13 @@ const config: CommercetoolsConfig = {
   oauthHost: AUTH_URL,
   concurrency: CONCURRENCY,
   apiToken: '',
-  cartCookie: '',
+  cartCookie: 'cart_id',
   cartCookieMaxAge: 0,
-  cookieMaxAge: 30,
+  cookieMaxAge: 300,
   customerCookie: 'customer_cookie',
   fetch: fetchGraphql,
   fetchProducts: fetchProducts,
-
+  currency: CURRENCY,
   getLocale() {
     if (this.locale) {
       return this.locale.indexOf('-') != -1
@@ -103,7 +105,7 @@ const operations = {
   login,
 }
 
-export type APIs = LoginAPI | CustomerAPI | SignupAPI
+export type APIs = LoginAPI | CustomerAPI | SignupAPI | CartAPI
 
 export const provider = { config, operations }
 

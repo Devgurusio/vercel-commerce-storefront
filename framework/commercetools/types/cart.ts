@@ -29,10 +29,8 @@ export type TaxedItemPrice = {
 export type CommercetoolsLineItems = {
   id: string
   productId: string
-  productSlug: Products.LocalString
-  name: {
-    en: string
-  }
+  productSlug: string
+  name: string
   variant: Products.CommercetoolsProductVariant
   price: Products.CommerceToolsProductPrice
   totalPrice: totalPrice
